@@ -1,0 +1,14 @@
+Scenario1
+The costs of the links (s-r1, r1-r2, r1-d) will be estimated and saved by r1,  
+the costs of the links (s-r3, r2-r3, r3-d) will be estimated and saved by r3, and finally, 
+the costs of the links (s-r2, r2-d) will be estimated and saved by r2; 
+
+
+
+
+
+
+the other scenario: 
+the costs of the links (s-r1, r1-d) will be estimated and saved by r1,  
+the costs of the links (s-r3, r3-d) will be estimated and saved by r3, and finally, 
+the costs of the links (s-r2,r1-r2, r2-r3, r2-d) will be estimated and saved by r2. 
