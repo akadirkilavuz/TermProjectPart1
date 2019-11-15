@@ -6,7 +6,7 @@ from threading import Thread
 udp_ip_address_r1 = '10.10.1.1'
 send_port_no_r1 = 12002
 
-udp_ip_address_r2 = '10.10.2.1'
+udp_ip_address_r2 = '10.10.2.2'
 send_port_no_r2 = 13032
 
 udp_ip_address_r3 = '10.10.3.1'
@@ -31,7 +31,6 @@ def server(ip, port, name):
 			data_receiver.settimeout(None)
 			data_receiver.sendto(data,addr)
 	except timeout:
-		print ("{} UDP connection will be closed").format(name)
 		data_receiver.close()		
 
 		
@@ -50,4 +49,5 @@ def main():
 
 if __name__ == '__main__':
 	main()
+
 

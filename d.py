@@ -3,10 +3,10 @@ from socket import *
 import datetime
 from threading import Thread
 
-udp_ip_address_r1 = '10.10.4.1'
+udp_ip_address_r1 = '10.10.4.2'
 send_port_no_r1 = 12052
 
-udp_ip_address_r2 = '10.10.5.1'
+udp_ip_address_r2 = '10.10.5.2'
 send_port_no_r2 = 12082
 
 udp_ip_address_r3 = '10.10.7.1'
@@ -31,7 +31,6 @@ def server(ip, port, name):
 			data_receiver.settimeout(None)
 			data_receiver.sendto(data,addr)
 	except timeout:
-		print ("{} UDP connection will be closed").format(name)
 		data_receiver.close()
 		
 def main():
@@ -49,4 +48,5 @@ def main():
 
 if __name__ == '__main__':
 	main()
+
 
