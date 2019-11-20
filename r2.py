@@ -21,11 +21,6 @@ udp_port_no_R3 = 14000
 PACKET_SIZE = 128
 
 
-epoch = datetime.datetime.utcfromtimestamp(0)
-
-def time_millis(dt):
-    return int((dt - epoch).total_seconds() * 1000.0)
-
 RTTfor_R2_s = 0
 RTTfor_R2_d = 0
 
@@ -35,7 +30,7 @@ def server(ip, port, name):
     data_receiver.bind((ip,port))
     try:
         while True:
-            data_receiver.settimeout(30)
+            data_receiver.settimeout(10)
             data,addr = data_receiver.recvfrom(PACKET_SIZE)
             data_receiver.settimeout(None)
             data_receiver.sendto(data,addr)
@@ -44,7 +39,7 @@ def server(ip, port, name):
 
 def client(ip, port, name):
     if(name=="s"):  
-        for messages in range(1000):      
+        for messagess in range(1000):      
             data_send = socket(AF_INET,SOCK_DGRAM)
             data_send.settimeout(0.5)
             message = b'test'
@@ -56,12 +51,14 @@ def client(ip, port, name):
                 elapsed = end - start
                 global RTTfor_R2_s
                 RTTfor_R2_s += elapsed
-                print(f'{data} {messages} {elapsed}')
+                print(f'{data} {messagess} {elapsed}')
             except timeout:
                 print('REQUEST TIME OUT')
+                data_send.close()
+                break
 
     if(name=="d"):      
-        for messages in range(1000):      
+        for messagesd in range(1000):      
             data_send = socket(AF_INET,SOCK_DGRAM)
             data_send.settimeout(0.5)
             message = b'test'
@@ -73,9 +70,11 @@ def client(ip, port, name):
                 elapsed = end - start
                 global RTTfor_R2_d
                 RTTfor_R2_d += elapsed
-                print(f'{data} {messages} {elapsed}')
+                print(f'{data} {messagesd} {elapsed}')
             except timeout:
                 print('REQUEST TIME OUT')
+                data_send.close()
+                break
 
 
 def main():
@@ -100,10 +99,16 @@ def main():
     s.join()
     d.join()
 
+    f = open("link_costs.txt","w+")
+    f.close()
+    f = open("link_costs.txt","a+")
+    f.write("RTT between R2-s : %s\r\n" % (RTTfor_R2_s/1000))
+    f.write("RTT between R2-d : %s\r\n" % (RTTfor_R2_d/1000))
+    f.close()
+
     print(RTTfor_R2_s/1000.0)
     print(RTTfor_R2_d/1000.0)
 
 if __name__ == '__main__':
     main()
-
 

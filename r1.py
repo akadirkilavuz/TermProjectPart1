@@ -1,4 +1,3 @@
-import random
 from socket import *
 import datetime
 import time
@@ -18,18 +17,13 @@ udp_port_no_d = 12052
 PACKET_SIZE = 128
 
 
-epoch = datetime.datetime.utcfromtimestamp(0)
-
-def time_millis(dt):
-    return int((dt - epoch).total_seconds() * 1000.0)
-
 RTTfor_R1_s = 0
 RTTfor_R1_R2 = 0
 RTTfor_R1_d = 0
 
 def client(ip, port, name):
 	if(name=="s"):	
-		for messages in range(1000):		
+		for messagess in range(1000):		
 			data_send = socket(AF_INET,SOCK_DGRAM)
 			data_send.settimeout(0.5)
 			message = b'test'
@@ -41,12 +35,14 @@ def client(ip, port, name):
 				elapsed = end - start
 				global RTTfor_R1_s
 				RTTfor_R1_s += elapsed
-				print(f'{data} {messages} {elapsed}')
+				print(f'{data} {messagess} {elapsed}')
 			except timeout:
 				print('REQUEST TIME OUT')
+				data_send.close()
+				break
 
 	if(name=="r2"):		
-		for messages in range(10):		
+		for messagesr2 in range(1000):		
 			data_send = socket(AF_INET,SOCK_DGRAM)
 			data_send.settimeout(0.5)
 			message = b'test'
@@ -58,12 +54,14 @@ def client(ip, port, name):
 				elapsed = end - start
 				global RTTfor_R1_R2
 				RTTfor_R1_R2 = RTTfor_R1_R2 + elapsed
-				print(f'{data} {messages} {elapsed}')
+				print(f'{data} {messagesr2} {elapsed}')
 			except timeout:
 				print('REQUEST TIME OUT')
+				data_send.close()
+				break
 
 	if(name=="d"):		
-		for messages in range(1000):		
+		for messagesd in range(1000):		
 			data_send = socket(AF_INET,SOCK_DGRAM)
 			data_send.settimeout(0.5)
 			message = b'test'
@@ -75,9 +73,11 @@ def client(ip, port, name):
 				elapsed = end - start
 				global RTTfor_R1_d
 				RTTfor_R1_d += elapsed
-				print(f'{data} {messages} {elapsed}')
+				print(f'{data} {messagesd} {elapsed}')
 			except timeout:
 				print('REQUEST TIME OUT')
+				data_send.close()
+				break
 
 
 def main():
@@ -93,10 +93,16 @@ def main():
 	R2.join()
 	d.join()
 
+	f = open("link_costs.txt","w+")
+	f.close()
+	f = open("link_costs.txt","a+")
+	f.write("RTT between R1-s : %s\r\n" % (RTTfor_R1_s/1000))
+	f.write("RTT between R1-R2 : %s\r\n" % (RTTfor_R1_R2/1000))
+	f.write("RTT between R1-d : %s\r\n" % (RTTfor_R1_d/1000))
+	f.close()
 	print(RTTfor_R1_s/1000.0)
 	print(RTTfor_R1_R2/1000.0)
 	print(RTTfor_R1_d/1000.0)
 
 if __name__ == '__main__':
 	main()
-

@@ -15,18 +15,13 @@ send_port_no_r3 = 13002
 
 PACKET_SIZE = 128
 
-epoch = datetime.datetime.utcfromtimestamp(0)
-
-def time_millis(dt):
-    return int((dt - epoch).total_seconds() * 1000.0)
-
 
 def server(ip, port, name):
 	data_receiver = socket(AF_INET,SOCK_DGRAM)
 	data_receiver.bind((ip,port))
 	try:
 		while True:
-			data_receiver.settimeout(30)
+			data_receiver.settimeout(10)
 			data,addr = data_receiver.recvfrom(PACKET_SIZE)
 			data_receiver.settimeout(None)
 			data_receiver.sendto(data,addr)
@@ -48,5 +43,4 @@ def main():
 
 if __name__ == '__main__':
 	main()
-
 

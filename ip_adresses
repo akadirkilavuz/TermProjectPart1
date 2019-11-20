@@ -7,6 +7,7 @@ e2110260@pc3.instageni.clemson.edu:29410,
 e2099299@pc3.instageni.clemson.edu:29410
 
 
+ssh -i ~/.ssh/id_geni_ssh_rsa -R 52698:localhost:52698 e2110260@pc3.instageni.clemson.edu -p 29410
 
 
 
